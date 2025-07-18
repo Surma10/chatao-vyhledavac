@@ -1,4 +1,5 @@
-<!-- CHATAO – AI VYHLEDÁVAČ CHAT S DATY -->
+
+<!-- CHATAO – AI VYHLEDÁVAČ CHAT -->
 <!DOCTYPE html>
 <html lang="cs">
 <head>
@@ -6,92 +7,168 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Chatao.cz – Chytré vyhledávání chat</title>
   <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/685/685655.png" type="image/png">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
+    :root {
+      --primary: #2d572c;
+      --secondary: #3a7f42;
+      --bg: #f5f5f5;
+      --white: #ffffff;
+      --shadow: 0 4px 16px rgba(0,0,0,0.05);
+    }
+
     body {
-      font-family: 'Segoe UI', sans-serif;
+      font-family: 'Inter', sans-serif;
       margin: 0;
-      background: #eef2ef;
+      background-color: var(--bg);
+      color: #333;
     }
+
     header {
-      background-color: #2d572c;
+      background-color: var(--primary);
       color: white;
-      padding: 1rem 2rem;
+      padding: 2rem 1rem;
       text-align: center;
+      font-size: 1.8rem;
+      font-weight: 700;
     }
-    footer {
-      background-color: #2d572c;
-      color: white;
-      text-align: center;
+
+    nav {
+      background-color: var(--secondary);
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
       padding: 1rem;
-      margin-top: 2rem;
     }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      font-weight: 600;
+      transition: opacity 0.2s ease;
+    }
+
+    nav a:hover {
+      opacity: 0.8;
+    }
+
     .main-wrapper {
-      max-width: 900px;
+      max-width: 1100px;
       margin: auto;
-      padding: 2rem;
+      padding: 2rem 1rem;
     }
-    .chat-wrapper {
-      background: white;
+
+    .search-box, .static-page {
+      background-color: var(--white);
       padding: 2rem;
       border-radius: 12px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      box-shadow: var(--shadow);
+      margin-bottom: 2rem;
     }
+
+    .search-box h2 {
+      margin-top: 0;
+      font-size: 1.5rem;
+    }
+
     input[type=text] {
       width: 100%;
       padding: 1rem;
       font-size: 1rem;
       border: 1px solid #ccc;
       border-radius: 8px;
+      margin-bottom: 1rem;
     }
+
     button {
-      margin-top: 1rem;
-      padding: 0.8rem 1.2rem;
+      padding: 0.8rem 2rem;
       font-size: 1rem;
-      background: #3a7f42;
+      background: var(--secondary);
       color: white;
       border: none;
       border-radius: 8px;
       cursor: pointer;
+      font-weight: 600;
     }
-    #response {
-      margin-top: 2rem;
+
+    button:hover {
+      background: #2e6e37;
     }
+
     .card {
-      background: #e9f5ea;
-      border-radius: 8px;
-      padding: 1rem;
-      margin-bottom: 1rem;
       display: flex;
-      gap: 1rem;
-      align-items: center;
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      margin-bottom: 1rem;
     }
+
     .card img {
-      width: 120px;
-      height: 80px;
+      width: 140px;
+      height: 100%;
       object-fit: cover;
-      border-radius: 6px;
     }
+
     .card-content {
+      padding: 1rem;
       flex: 1;
     }
+
     .card-content h3 {
-      margin: 0 0 0.3rem 0;
+      margin: 0 0 0.5rem 0;
+      font-size: 1.2rem;
+    }
+
+    footer {
+      background-color: var(--primary);
+      color: white;
+      text-align: center;
+      padding: 1.5rem;
+      margin-top: 3rem;
+      font-size: 0.9rem;
     }
   </style>
 </head>
 <body>
-  <header>
-    <h1>Chatao.cz – Chytré vyhledávání chat</h1>
-  </header>
+  <header>Chatao.cz – Chytré vyhledávání chat</header>
+
+  <nav>
+    <a href="#">Domů</a>
+    <a href="#lokality">Oblíbené lokality</a>
+    <a href="#pridat">Přidat chatu</a>
+    <a href="#kontakt">Kontakt</a>
+  </nav>
 
   <main class="main-wrapper">
-    <div class="chat-wrapper">
+    <section class="search-box">
       <h2>🔍 Najdi ideální chatu</h2>
       <p>Zadej popis: <em>(např. Chata pro 4 lidi se saunou do 2 hodin od Brna)</em></p>
       <input type="text" id="query" placeholder="Napiš, co hledáš...">
       <button onclick="sendQuery()">Vyhledat chatu</button>
       <div id="response"></div>
-    </div>
+    </section>
+
+    <section class="static-page" id="lokality">
+      <h2>🌲 Oblíbené lokality</h2>
+      <ul>
+        <li>Jeseníky</li>
+        <li>Šumava</li>
+        <li>Krkonoše</li>
+        <li>Orlické hory</li>
+        <li>Vysočina</li>
+      </ul>
+    </section>
+
+    <section class="static-page" id="pridat">
+      <h2>📝 Přidat chatu</h2>
+      <p>V budoucnu zde bude možnost přidat svou chatu do systému. Sledujte nás!</p>
+    </section>
+
+    <section class="static-page" id="kontakt">
+      <h2>📞 Kontakt</h2>
+      <p>Máte dotaz nebo návrh? Napište nám na <strong>info@chatao.cz</strong></p>
+    </section>
   </main>
 
   <footer>
@@ -110,7 +187,7 @@
         lokalita: "u Brna",
         vzdalenostKm: 95,
         popis: "Moderní chata se saunou u lesa, krbem, 1h 30min od Brna.",
-        obrazek: "https://via.placeholder.com/120x80?text=Chata+1",
+        obrazek: "https://via.placeholder.com/140x100?text=Chata+1",
         odkaz: "#"
       },
       {
@@ -123,7 +200,7 @@
         lokalita: "Jeseníky",
         vzdalenostKm: 180,
         popis: "Stylová chalupa pro páry, s krbem a výhledem.",
-        obrazek: "https://via.placeholder.com/120x80?text=Chata+2",
+        obrazek: "https://via.placeholder.com/140x100?text=Chata+2",
         odkaz: "#"
       },
       {
@@ -136,7 +213,7 @@
         lokalita: "Orlické hory",
         vzdalenostKm: 150,
         popis: "Velká chata pro rodinu s vířivkou, bazénem a terasou.",
-        obrazek: "https://via.placeholder.com/120x80?text=Chata+3",
+        obrazek: "https://via.placeholder.com/140x100?text=Chata+3",
         odkaz: "#"
       }
     ];
@@ -182,4 +259,3 @@
   </script>
 </body>
 </html>
-
