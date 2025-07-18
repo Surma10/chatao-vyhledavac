@@ -1,75 +1,129 @@
-
+<!-- CHATAO – ADMINISTRACE CHAT -->
 <!DOCTYPE html>
 <html lang="cs">
 <head>
   <meta charset="UTF-8">
-  <title>Admin – Přidat chatu</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chatao.cz – Přidat chatu</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
-    body { font-family: sans-serif; padding: 2rem; background: #f9f9f9; }
-    input, textarea, select { width: 100%; padding: 0.5rem; margin-bottom: 1rem; }
-    table { width: 100%; border-collapse: collapse; margin-top: 2rem; }
-    th, td { border: 1px solid #ccc; padding: 0.5rem; text-align: left; }
-    .btn { padding: 0.6rem 1.2rem; background: #3a7f42; color: white; border: none; border-radius: 5px; cursor: pointer; }
-    pre { background: #eee; padding: 1rem; margin-top: 2rem; overflow: auto; }
+    body {
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      padding: 2rem;
+      background-color: #f0f0f0;
+    }
+    h1 {
+      color: #2d572c;
+    }
+    form {
+      background: white;
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.05);
+      max-width: 600px;
+      margin: auto;
+    }
+    input, textarea {
+      width: 100%;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 1rem;
+    }
+    label {
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      display: block;
+    }
+    button {
+      background-color: #3a7f42;
+      color: white;
+      border: none;
+      padding: 1rem 2rem;
+      font-size: 1rem;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #2e6e37;
+    }
+    .success {
+      text-align: center;
+      margin-top: 2rem;
+      color: #2d572c;
+      font-weight: 600;
+    }
   </style>
 </head>
 <body>
-  <h2>Admin – Přidávání chat</h2>
-  <input type="text" id="nazev" placeholder="Název chaty">
-  <input type="number" id="kapacita" placeholder="Kapacita">
-  <label><input type="checkbox" id="sauna"> Sauna</label><br>
-  <label><input type="checkbox" id="virivka"> Vířivka</label><br>
-  <label><input type="checkbox" id="krb"> Krb</label><br>
-  <label><input type="checkbox" id="bazen"> Bazén</label><br>
-  <input type="text" id="lokalita" placeholder="Lokalita (např. Krkonoše)">
-  <input type="number" id="vzdalenostKm" placeholder="Vzdálenost v km">
-  <textarea id="popis" placeholder="Popis chaty"></textarea>
-  <input type="text" id="obrazek" placeholder="URL obrázku">
-  <input type="text" id="odkaz" placeholder="Odkaz na detail">
+  <h1>Přidat novou chatu</h1>
+  <form id="chat-form">
+    <label for="nazev">Název chaty</label>
+    <input type="text" id="nazev" required>
 
-  <button class="btn" onclick="pridatChatu()">Přidat chatu</button>
-  <button class="btn" onclick="vygenerovatJSON()">Vygenerovat JSON</button>
+    <label for="kapacita">Kapacita osob</label>
+    <input type="number" id="kapacita" required>
 
-  <table id="tabulka">
-    <thead><tr><th>Název</th><th>Kapacita</th><th>Lokalita</th></tr></thead>
-    <tbody></tbody>
-  </table>
+    <label for="lokalita">Lokalita</label>
+    <input type="text" id="lokalita" required>
 
-  <h3>Výstup JSON</h3>
-  <pre id="vystup"></pre>
+    <label for="vzdalenost">Vzdálenost od Brna (km)</label>
+    <input type="number" id="vzdalenost" required>
 
-<script>
-  const zaznamy = [];
+    <label for="popis">Popis</label>
+    <textarea id="popis" rows="3" required></textarea>
 
-  function pridatChatu() {
-    const zaznam = {
-      nazev: document.getElementById('nazev').value,
-      kapacita: parseInt(document.getElementById('kapacita').value),
-      sauna: document.getElementById('sauna').checked,
-      virivka: document.getElementById('virivka').checked,
-      krb: document.getElementById('krb').checked,
-      bazen: document.getElementById('bazen').checked,
-      lokalita: document.getElementById('lokalita').value,
-      vzdalenostKm: parseInt(document.getElementById('vzdalenostKm').value),
-      popis: document.getElementById('popis').value,
-      obrazek: document.getElementById('obrazek').value,
-      odkaz: document.getElementById('odkaz').value
-    };
-    zaznamy.push(zaznam);
-    zobrazTabulku();
-  }
+    <label for="obrazek">URL obrázku</label>
+    <input type="text" id="obrazek" required>
 
-  function zobrazTabulku() {
-    const tbody = document.querySelector('#tabulka tbody');
-    tbody.innerHTML = '';
-    zaznamy.forEach(z => {
-      tbody.innerHTML += `<tr><td>${z.nazev}</td><td>${z.kapacita}</td><td>${z.lokalita}</td></tr>`;
+    <label>
+      <input type="checkbox" id="sauna"> Sauna
+    </label>
+    <label>
+      <input type="checkbox" id="virivka"> Vířivka
+    </label>
+    <label>
+      <input type="checkbox" id="krb"> Krb
+    </label>
+    <label>
+      <input type="checkbox" id="bazen"> Bazén
+    </label>
+
+    <button type="submit">Uložit chatu</button>
+  </form>
+
+  <p class="success" id="msg"></p>
+
+  <script>
+    const form = document.getElementById('chat-form');
+    const msg = document.getElementById('msg');
+
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const chaty = JSON.parse(localStorage.getItem('chaty')) || [];
+
+      const novaChata = {
+        nazev: document.getElementById('nazev').value,
+        kapacita: parseInt(document.getElementById('kapacita').value),
+        lokalita: document.getElementById('lokalita').value,
+        vzdalenostKm: parseInt(document.getElementById('vzdalenost').value),
+        popis: document.getElementById('popis').value,
+        obrazek: document.getElementById('obrazek').value,
+        sauna: document.getElementById('sauna').checked,
+        virivka: document.getElementById('virivka').checked,
+        krb: document.getElementById('krb').checked,
+        bazen: document.getElementById('bazen').checked,
+        odkaz: "#"
+      };
+
+      chaty.push(novaChata);
+      localStorage.setItem('chaty', JSON.stringify(chaty));
+
+      msg.textContent = "Chata byla úspěšně přidána!";
+      form.reset();
     });
-  }
-
-  function vygenerovatJSON() {
-    document.getElementById('vystup').textContent = JSON.stringify(zaznamy, null, 2);
-  }
-</script>
+  </script>
 </body>
 </html>
