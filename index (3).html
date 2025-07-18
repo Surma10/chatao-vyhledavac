@@ -1,0 +1,157 @@
+<!-- CHATAO – AI VYHLEDÁVAČ CHAT S DATY -->
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chatao.cz – Chytré vyhledávání</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 2rem;
+      background: #f4f4f4;
+    }
+    .chat-wrapper {
+      max-width: 800px;
+      margin: auto;
+      background: white;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    input[type=text] {
+      width: 100%;
+      padding: 1rem;
+      font-size: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+    button {
+      margin-top: 1rem;
+      padding: 0.8rem 1.2rem;
+      font-size: 1rem;
+      background: #3a7f42;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    #response {
+      margin-top: 2rem;
+    }
+    .card {
+      background: #e9f5ea;
+      border-radius: 8px;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+    }
+    .card img {
+      width: 120px;
+      height: 80px;
+      object-fit: cover;
+      border-radius: 6px;
+    }
+    .card-content {
+      flex: 1;
+    }
+    .card-content h3 {
+      margin: 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="chat-wrapper">
+    <h2>🔍 Chytré vyhledávání chat</h2>
+    <p>Zadej popis: <em>(např. Chata pro 4 lidi se saunou do 2 hodin od Brna)</em></p>
+    <input type="text" id="query" placeholder="Napiš, co hledáš...">
+    <button onclick="sendQuery()">Vyhledat chatu</button>
+    <div id="response"></div>
+  </div>
+
+  <script>
+    const data = [
+      {
+        nazev: "Chata u lesa",
+        kapacita: 4,
+        sauna: true,
+        virivka: false,
+        krb: true,
+        bazen: false,
+        lokalita: "u Brna",
+        vzdalenostKm: 95,
+        popis: "Moderní chata se saunou u lesa, krbem, 1h 30min od Brna.",
+        obrazek: "https://via.placeholder.com/120x80?text=Chata+1",
+        odkaz: "#"
+      },
+      {
+        nazev: "Romantická chalupa",
+        kapacita: 2,
+        sauna: false,
+        virivka: false,
+        krb: true,
+        bazen: false,
+        lokalita: "Jeseníky",
+        vzdalenostKm: 180,
+        popis: "Stylová chalupa pro páry, s krbem a výhledem.",
+        obrazek: "https://via.placeholder.com/120x80?text=Chata+2",
+        odkaz: "#"
+      },
+      {
+        nazev: "Rodinná chata s vířivkou",
+        kapacita: 6,
+        sauna: false,
+        virivka: true,
+        krb: false,
+        bazen: true,
+        lokalita: "Orlické hory",
+        vzdalenostKm: 150,
+        popis: "Velká chata pro rodinu s vířivkou, bazénem a terasou.",
+        obrazek: "https://via.placeholder.com/120x80?text=Chata+3",
+        odkaz: "#"
+      }
+    ];
+
+    async function sendQuery() {
+      const query = document.getElementById('query').value.toLowerCase();
+      const responseBox = document.getElementById('response');
+      responseBox.innerHTML = '<p>⏳ Hledám vhodné chaty...</p>';
+
+      const hledamKapacitu = query.includes("pro 6") ? 6 : (query.includes("pro 4") ? 4 : (query.includes("pro 2") ? 2 : 0));
+      const chceSaunu = query.includes("sauna") || query.includes("saunou");
+      const chceVirivku = query.includes("vířivka") || query.includes("vířivkou");
+      const chceKrb = query.includes("krb") || query.includes("krbem");
+      const chceBazen = query.includes("bazén") || query.includes("bazenem");
+      const maxVzdalenost = query.includes("2 hodin") ? 120 : 999;
+
+      const results = data.filter(chata => {
+        return (
+          (hledamKapacitu === 0 || chata.kapacita >= hledamKapacitu) &&
+          (!chceSaunu || chata.sauna) &&
+          (!chceVirivku || chata.virivka) &&
+          (!chceKrb || chata.krb) &&
+          (!chceBazen || chata.bazen) &&
+          chata.vzdalenostKm <= maxVzdalenost
+        );
+      });
+
+      if (results.length === 0) {
+        responseBox.innerHTML = '<p>❌ Nenašli jsme žádnou vhodnou chatu. Zkuste upravit dotaz.</p>';
+      } else {
+        responseBox.innerHTML = results.map(chata => `
+          <div class="card">
+            <img src="${chata.obrazek}" alt="${chata.nazev}">
+            <div class="card-content">
+              <h3>${chata.nazev}</h3>
+              <p>${chata.popis}</p>
+              <a href="${chata.odkaz}">Zobrazit detail</a>
+            </div>
+          </div>
+        `).join('');
+      }
+    }
+  </script>
+</body>
+</html>
