@@ -4,16 +4,33 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Chatao.cz – Chytré vyhledávání</title>
+  <title>Chatao.cz – Chytré vyhledávání chat</title>
+  <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/685/685655.png" type="image/png">
   <style>
     body {
-      font-family: sans-serif;
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      background: #eef2ef;
+    }
+    header {
+      background-color: #2d572c;
+      color: white;
+      padding: 1rem 2rem;
+      text-align: center;
+    }
+    footer {
+      background-color: #2d572c;
+      color: white;
+      text-align: center;
+      padding: 1rem;
+      margin-top: 2rem;
+    }
+    .main-wrapper {
+      max-width: 900px;
+      margin: auto;
       padding: 2rem;
-      background: #f4f4f4;
     }
     .chat-wrapper {
-      max-width: 800px;
-      margin: auto;
       background: white;
       padding: 2rem;
       border-radius: 12px;
@@ -58,18 +75,28 @@
       flex: 1;
     }
     .card-content h3 {
-      margin: 0;
+      margin: 0 0 0.3rem 0;
     }
   </style>
 </head>
 <body>
-  <div class="chat-wrapper">
-    <h2>🔍 Chytré vyhledávání chat</h2>
-    <p>Zadej popis: <em>(např. Chata pro 4 lidi se saunou do 2 hodin od Brna)</em></p>
-    <input type="text" id="query" placeholder="Napiš, co hledáš...">
-    <button onclick="sendQuery()">Vyhledat chatu</button>
-    <div id="response"></div>
-  </div>
+  <header>
+    <h1>Chatao.cz – Chytré vyhledávání chat</h1>
+  </header>
+
+  <main class="main-wrapper">
+    <div class="chat-wrapper">
+      <h2>🔍 Najdi ideální chatu</h2>
+      <p>Zadej popis: <em>(např. Chata pro 4 lidi se saunou do 2 hodin od Brna)</em></p>
+      <input type="text" id="query" placeholder="Napiš, co hledáš...">
+      <button onclick="sendQuery()">Vyhledat chatu</button>
+      <div id="response"></div>
+    </div>
+  </main>
+
+  <footer>
+    &copy; 2025 Chatao.cz – Všechna práva vyhrazena.
+  </footer>
 
   <script>
     const data = [
@@ -155,3 +182,4 @@
   </script>
 </body>
 </html>
+
