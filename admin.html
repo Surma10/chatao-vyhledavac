@@ -1,0 +1,75 @@
+
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin – Přidat chatu</title>
+  <style>
+    body { font-family: sans-serif; padding: 2rem; background: #f9f9f9; }
+    input, textarea, select { width: 100%; padding: 0.5rem; margin-bottom: 1rem; }
+    table { width: 100%; border-collapse: collapse; margin-top: 2rem; }
+    th, td { border: 1px solid #ccc; padding: 0.5rem; text-align: left; }
+    .btn { padding: 0.6rem 1.2rem; background: #3a7f42; color: white; border: none; border-radius: 5px; cursor: pointer; }
+    pre { background: #eee; padding: 1rem; margin-top: 2rem; overflow: auto; }
+  </style>
+</head>
+<body>
+  <h2>Admin – Přidávání chat</h2>
+  <input type="text" id="nazev" placeholder="Název chaty">
+  <input type="number" id="kapacita" placeholder="Kapacita">
+  <label><input type="checkbox" id="sauna"> Sauna</label><br>
+  <label><input type="checkbox" id="virivka"> Vířivka</label><br>
+  <label><input type="checkbox" id="krb"> Krb</label><br>
+  <label><input type="checkbox" id="bazen"> Bazén</label><br>
+  <input type="text" id="lokalita" placeholder="Lokalita (např. Krkonoše)">
+  <input type="number" id="vzdalenostKm" placeholder="Vzdálenost v km">
+  <textarea id="popis" placeholder="Popis chaty"></textarea>
+  <input type="text" id="obrazek" placeholder="URL obrázku">
+  <input type="text" id="odkaz" placeholder="Odkaz na detail">
+
+  <button class="btn" onclick="pridatChatu()">Přidat chatu</button>
+  <button class="btn" onclick="vygenerovatJSON()">Vygenerovat JSON</button>
+
+  <table id="tabulka">
+    <thead><tr><th>Název</th><th>Kapacita</th><th>Lokalita</th></tr></thead>
+    <tbody></tbody>
+  </table>
+
+  <h3>Výstup JSON</h3>
+  <pre id="vystup"></pre>
+
+<script>
+  const zaznamy = [];
+
+  function pridatChatu() {
+    const zaznam = {
+      nazev: document.getElementById('nazev').value,
+      kapacita: parseInt(document.getElementById('kapacita').value),
+      sauna: document.getElementById('sauna').checked,
+      virivka: document.getElementById('virivka').checked,
+      krb: document.getElementById('krb').checked,
+      bazen: document.getElementById('bazen').checked,
+      lokalita: document.getElementById('lokalita').value,
+      vzdalenostKm: parseInt(document.getElementById('vzdalenostKm').value),
+      popis: document.getElementById('popis').value,
+      obrazek: document.getElementById('obrazek').value,
+      odkaz: document.getElementById('odkaz').value
+    };
+    zaznamy.push(zaznam);
+    zobrazTabulku();
+  }
+
+  function zobrazTabulku() {
+    const tbody = document.querySelector('#tabulka tbody');
+    tbody.innerHTML = '';
+    zaznamy.forEach(z => {
+      tbody.innerHTML += `<tr><td>${z.nazev}</td><td>${z.kapacita}</td><td>${z.lokalita}</td></tr>`;
+    });
+  }
+
+  function vygenerovatJSON() {
+    document.getElementById('vystup').textContent = JSON.stringify(zaznamy, null, 2);
+  }
+</script>
+</body>
+</html>
